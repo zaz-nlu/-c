@@ -42,7 +42,7 @@ void read_cards(void){
         num_in_suit[suit]=0;
     }
 
-    while(cards_read < NUM_SUITS){
+    while (cards_read < NUM_CARDS){
         bad_card=false;
 
         printf("Enter a card: ");
@@ -134,45 +134,48 @@ void read_cards(void){
     }
 }
 
-void analyze_cards(void){
-    int num_consec=0;
-    int rank,suit;
+// 分析手中的5张牌，判断牌型
+void analyze_cards(void) {
+    int num_consec = 0;
+    int rank, suit;
 
     straight = false;
     flush = false;
     four = false;
     three = false;
-    pairs =0;
+    pairs = 0;
 
-    for(suit=0;suit<NUM_SUITS;suit++){
-        if(num_in_suit[suit] == NUM_CARDS)
+    // 检查同花的逻辑
+    for (suit = 0; suit < NUM_SUITS; suit++) {
+        if (num_in_suit[suit] == NUM_CARDS)
             flush = true;
     }
-    
-    rank=0;
-    while(num_in_rank[rank] == 0){
+
+    // 检查顺子的逻辑
+    rank = 0;
+    while (num_in_rank[rank] == 0) {
         rank++;
     }
-    for(;rank<NUM_RANKS && num_in_rank[rank] > 0 ;rank++){
+    for (; rank < NUM_RANKS && num_in_rank[rank] > 0; rank++) {
         num_consec++;
-    
     }
-    if(num_consec == NUM_CARDS){
+    if (num_consec == NUM_CARDS) {
         straight = true;
         return;
     }
 
-    for(rank = 0; rank< NUM_RANKS;rank++){
-        if(num_in_rank[rank]== 4)
-            four=true;
-        if(num_in_rank[rank]== 3){
-            three=true;
+    // 检查四条、三条和对子的逻辑
+    for (rank = 0; rank < NUM_RANKS; rank++) {
+        if (num_in_rank[rank] == 4)
+            four = true;
+        if (num_in_rank[rank] == 3) {
+            three = true;
         }
-        if(num_in_rank[rank]== 2){
+        if (num_in_rank[rank] == 2) {
             pairs++;
         }
     }
-}     
+}    
 
 void print_cards(void){
     if(straight && flush){
